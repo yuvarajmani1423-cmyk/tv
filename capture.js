@@ -5,10 +5,10 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 
-// All secrets arrive as one JSON block, so new PBI_TVn secrets work without editing the timer file.
+// Reads PBI_TV1, PBI_TV2 ... PBI_ROTATE and SHOT_KEY from the timer file's env lines.
 let S = {};
 try { S = JSON.parse(process.env.ALL_SECRETS || '{}'); } catch (e) {}
-['PBI_TV1', 'PBI_TV2', 'PBI_TV3', 'PBI_ROTATE', 'SHOT_KEY'].forEach(k => { if (!S[k] && process.env[k]) S[k] = process.env[k]; });
+Object.keys(process.env).filter(k => /^PBI_TV\d+$/.test(k) || k === 'PBI_ROTATE' || k === 'SHOT_KEY').forEach(k => { if (!S[k] && process.env[k]) S[k] = process.env[k]; });
 const KEY = S.SHOT_KEY;
 const jobs = [];
 Object.keys(S).filter(k => /^PBI_TV\d+$/.test(k)).sort((a, b) => a.length - b.length || a.localeCompare(b)).forEach(k => {
