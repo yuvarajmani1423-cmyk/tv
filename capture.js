@@ -1,17 +1,21 @@
 // Takes a full-screen picture of each Power BI report.
 // Links and the picture key come from GitHub Secrets, so they are never visible in this file.
-//   PBI_TV1, PBI_TV2, PBI_TV3 -> img/tv1-KEY.png, tv2..., tv3...
+//   PBI_TV1, PBI_TV2 ... PBI_TV20 ... -> img/tv1-KEY.png, tv2-KEY.png ...
 //   PBI_ROTATE (one link per line) -> img/rot1-KEY.png, rot2..., rot3... (for rotate.html)
 const { chromium } = require('playwright');
 const fs = require('fs');
 
-const KEY = process.env.SHOT_KEY;
+// All secrets arrive as one JSON block, so new PBI_TVn secrets work without editing the timer file.
+let S = {};
+try { S = JSON.parse(process.env.ALL_SECRETS || '{}'); } catch (e) {}
+['PBI_TV1', 'PBI_TV2', 'PBI_TV3', 'PBI_ROTATE', 'SHOT_KEY'].forEach(k => { if (!S[k] && process.env[k]) S[k] = process.env[k]; });
+const KEY = S.SHOT_KEY;
 const jobs = [];
-['1', '2', '3'].forEach(n => {
-  const url = process.env['PBI_TV' + n];
-  if (url && url.trim()) jobs.push({ name: 'tv' + n, url: url.trim() });
+Object.keys(S).filter(k => /^PBI_TV\d+$/.test(k)).sort((a, b) => a.length - b.length || a.localeCompare(b)).forEach(k => {
+  const url = (S[k] || '').trim();
+  if (url) jobs.push({ name: 'tv' + k.slice(6), url });
 });
-(process.env.PBI_ROTATE || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean)
+(S.PBI_ROTATE || '').split(/\r?\n/).map(s => s.trim()).filter(Boolean)
   .forEach((url, i) => jobs.push({ name: 'rot' + (i + 1), url }));
 
 async function shoot(browser, job) {
