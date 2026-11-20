@@ -45,6 +45,7 @@ jobs:
           PBI_TV3: ${{ secrets.PBI_TV3 }}
           PBI_TV4: ${{ secrets.PBI_TV4 }}
           PBI_TV5: ${{ secrets.PBI_TV5 }}
+          PBI_TV6: ${{ secrets.PBI_TV6 }}
           PBI_ROTATE: ${{ secrets.PBI_ROTATE }}
           SHOT_KEY: ${{ secrets.SHOT_KEY }}
         run: node capture.js
