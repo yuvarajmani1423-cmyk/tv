@@ -43,9 +43,9 @@ jobs:
           PBI_TV1: ${{ secrets.PBI_TV1 }}
           PBI_TV2: ${{ secrets.PBI_TV2 }}
           PBI_TV3: ${{ secrets.PBI_TV3 }}
+          PBI_TV4: ${{ secrets.PBI_TV4 }}
           PBI_ROTATE: ${{ secrets.PBI_ROTATE }}
           SHOT_KEY: ${{ secrets.SHOT_KEY }}
-          ALL_SECRETS: ${{ toJSON(secrets) }}
         run: node capture.js
 
       - uses: actions/upload-pages-artifact@v3
