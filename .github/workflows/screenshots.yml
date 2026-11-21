@@ -2,7 +2,7 @@ name: TV screenshots
 
 on:
   schedule:
-    - cron: "*/15 * * * *"
+    - cron: "*/15 * * * *"   # backup: restarts the chain if it ever stops
   workflow_dispatch:
   push:
     branches: [main]
@@ -11,6 +11,7 @@ permissions:
   contents: read
   pages: write
   id-token: write
+  actions: write             # lets each run start the next run
 
 concurrency:
   group: pages
@@ -19,14 +20,18 @@ concurrency:
 jobs:
   shoot:
     runs-on: ubuntu-latest
+    timeout-minutes: 40
     environment:
       name: github-pages
     steps:
-      - uses: actions/checkout@v4
+      - name: Note start time
+        run: echo "START=$(date +%s)" >> $GITHUB_ENV
 
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
         with:
-          node-version: 20
+          node-version: 22
 
       - name: Install browser
         run: |
@@ -54,8 +59,20 @@ jobs:
           SHOT_KEY: ${{ secrets.SHOT_KEY }}
         run: node capture.js
 
-      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v4
         with:
           path: _site
 
-      - uses: actions/deploy-pages@v4
+      - id: deployment
+        uses: actions/deploy-pages@v4
+
+      - name: Start the next run 15 minutes after this one began
+        if: always()
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          WAIT=$(( 900 - ( $(date +%s) - START ) ))
+          if [ "$WAIT" -gt 0 ]; then echo "Waiting $WAIT seconds"; sleep "$WAIT"; fi
+          gh workflow run screenshots.yml --ref main --repo "$GITHUB_REPOSITORY"
