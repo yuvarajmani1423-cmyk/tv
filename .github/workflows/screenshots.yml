@@ -59,6 +59,7 @@ jobs:
           PBI_ROT_TV10: ${{ secrets.PBI_ROT_TV10 }}
           PBI_ROT_TV11: ${{ secrets.PBI_ROT_TV11 }}
           PBI_ROT_TV12: ${{ secrets.PBI_ROT_TV12 }}
+          PBI_ROT_TV13: ${{ secrets.PBI_ROT_TV13 }}
           SHOT_KEY: ${{ secrets.SHOT_KEY }}
         run: node capture.js
 
