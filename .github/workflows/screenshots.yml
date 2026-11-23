@@ -60,6 +60,7 @@ jobs:
           PBI_ROT_TV11: ${{ secrets.PBI_ROT_TV11 }}
           PBI_ROT_TV12: ${{ secrets.PBI_ROT_TV12 }}
           PBI_ROT_TV13: ${{ secrets.PBI_ROT_TV13 }}
+          PBI_TV16: ${{ secrets.PBI_TV16 }}
           PBI_TV15: ${{ secrets.PBI_TV15 }}
           PBI_TV14: ${{ secrets.PBI_TV14 }}
           SHOT_KEY: ${{ secrets.SHOT_KEY }}
