@@ -18,14 +18,16 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
+  # Job 1: take the pictures and pack them
   shoot:
     runs-on: ubuntu-latest
-    timeout-minutes: 40
-    environment:
-      name: github-pages
+    timeout-minutes: 30
+    outputs:
+      start: ${{ steps.start.outputs.start }}
     steps:
-      - name: Note start time
-        run: echo "START=$(date +%s)" >> $GITHUB_ENV
+      - id: start
+        name: Note start time
+        run: echo "start=$(date +%s)" >> $GITHUB_OUTPUT
 
       - uses: actions/checkout@v6
 
@@ -80,14 +82,28 @@ jobs:
         with:
           path: _site
 
+  # Job 2: publish the pictures (GitHub recommends a separate job for this)
+  deploy:
+    needs: shoot
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+    steps:
       - id: deployment
         uses: actions/deploy-pages@v5
 
-      - name: Start the next run 15 minutes after this one began
-        if: always()
+  # Job 3: start the next run 15 minutes after this one began (runs even if a job above failed)
+  next:
+    needs: [shoot, deploy]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Start the next run
         env:
           GH_TOKEN: ${{ github.token }}
+          START: ${{ needs.shoot.outputs.start }}
         run: |
+          if [ -z "$START" ]; then START=$(date +%s); fi
           WAIT=$(( 900 - ( $(date +%s) - START ) ))
           if [ "$WAIT" -gt 0 ]; then echo "Waiting $WAIT seconds"; sleep "$WAIT"; fi
           gh workflow run screenshots.yml --ref main --repo "$GITHUB_REPOSITORY"
