@@ -51,6 +51,17 @@ jobs:
           PBI_TV4: ${{ secrets.PBI_TV4 }}
           PBI_TV5: ${{ secrets.PBI_TV5 }}
           PBI_TV6: ${{ secrets.PBI_TV6 }}
+          PBI_TV14: ${{ secrets.PBI_TV14 }}
+          PBI_TV15: ${{ secrets.PBI_TV15 }}
+          PBI_TV16: ${{ secrets.PBI_TV16 }}
+          PBI_TV17: ${{ secrets.PBI_TV17 }}
+          PBI_TV18: ${{ secrets.PBI_TV18 }}
+          PBI_TV19: ${{ secrets.PBI_TV19 }}
+          PBI_TV20: ${{ secrets.PBI_TV20 }}
+          PBI_TV21: ${{ secrets.PBI_TV21 }}
+          PBI_TV22: ${{ secrets.PBI_TV22 }}
+          PBI_TV23: ${{ secrets.PBI_TV23 }}
+          PBI_TV24: ${{ secrets.PBI_TV24 }}
           PBI_ROTATE: ${{ secrets.PBI_ROTATE }}
           PBI_ROT_34: ${{ secrets.PBI_ROT_34 }}
           PBI_ROT_7: ${{ secrets.PBI_ROT_7 }}
@@ -60,17 +71,6 @@ jobs:
           PBI_ROT_TV11: ${{ secrets.PBI_ROT_TV11 }}
           PBI_ROT_TV12: ${{ secrets.PBI_ROT_TV12 }}
           PBI_ROT_TV13: ${{ secrets.PBI_ROT_TV13 }}
-          PBI_TV24: ${{ secrets.PBI_TV24 }}
-          PBI_TV23: ${{ secrets.PBI_TV23 }}
-          PBI_TV22: ${{ secrets.PBI_TV22 }
-          PBI_TV21: ${{ secrets.PBI_TV21 }}
-          PBI_TV20: ${{ secrets.PBI_TV20 }}
-          PBI_TV19: ${{ secrets.PBI_TV19 }}
-          PBI_TV18: ${{ secrets.PBI_TV18 }}
-          PBI_TV17: ${{ secrets.PBI_TV17 }}
-          PBI_TV16: ${{ secrets.PBI_TV16 }}
-          PBI_TV15: ${{ secrets.PBI_TV15 }}
-          PBI_TV14: ${{ secrets.PBI_TV14 }}
           SHOT_KEY: ${{ secrets.SHOT_KEY }}
         run: node capture.js
 
