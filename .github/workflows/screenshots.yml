@@ -65,6 +65,7 @@ jobs:
           PBI_TV23: ${{ secrets.PBI_TV23 }}
           PBI_TV24: ${{ secrets.PBI_TV24 }}
           PBI_TV25: ${{ secrets.PBI_TV25 }}
+          PBI_TV26: ${{ secrets.PBI_TV26 }}
           PBI_ROTATE: ${{ secrets.PBI_ROTATE }}
           PBI_ROT_34: ${{ secrets.PBI_ROT_34 }}
           PBI_ROT_7: ${{ secrets.PBI_ROT_7 }}
